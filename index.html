@@ -552,6 +552,90 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 .lightbox-next{ right:1.5rem; top:50%; transform:translateY(-50%); }
 
 /* ==========================================================================
+   COOKIE CONSENT: banner echoes the hero's own material (dark glass,
+   orange accent, same radius/shadow language) so it reads as part of the
+   original design rather than a bolted-on afterthought.
+   ========================================================================== */
+.cookie-banner{
+  position:fixed; left:50%; bottom:1.5rem; z-index:var(--z-toast);
+  width:min(860px, calc(100% - 2rem)); max-width:calc(100% - 2rem);
+  background:oklch(19% 0.014 255 / 0.86); backdrop-filter:blur(20px) saturate(160%); -webkit-backdrop-filter:blur(20px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.14); border-radius:20px; color:var(--white);
+  padding:1.75rem 2rem; box-shadow:0 24px 70px rgba(8,10,14,0.4), inset 0 1px 0 rgba(255,255,255,0.07);
+  display:flex; align-items:center; gap:2rem;
+  opacity:0; transform:translate(-50%, 130%);
+  transition:opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.cookie-banner.is-visible{ opacity:1; transform:translate(-50%, 0); }
+.cookie-banner-text{ flex:1 1 auto; min-width:0; }
+.cookie-banner-text h3{ font-family:var(--font-display); font-size:1.15rem; font-weight:700; }
+.cookie-banner-text p{ color:oklch(85% 0.006 255); font-size:0.9rem; margin-top:0.5rem; max-width:56ch; }
+.cookie-banner-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:0.85rem; flex-shrink:0; }
+.cookie-link-btn{
+  color:oklch(85% 0.006 255); font-size:0.88rem; font-weight:600; text-decoration:underline; text-underline-offset:3px;
+  text-decoration-color:transparent; transition:color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+}
+.cookie-link-btn:hover, .cookie-link-btn:focus-visible{ color:var(--white); text-decoration-color:currentColor; }
+@media (max-width:760px){
+  .cookie-banner{ flex-direction:column; align-items:stretch; padding:1.5rem; text-align:left; }
+  .cookie-banner-actions{ width:100%; }
+  .cookie-banner-actions .btn{ flex:1 1 auto; }
+}
+
+/* ---- settings modal ---- */
+.cookie-modal-backdrop{
+  position:fixed; inset:0; z-index:var(--z-modal); background:rgba(8,9,12,0.72); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center; padding:1.5rem;
+  opacity:0; visibility:hidden; transition:opacity var(--dur-med) var(--ease-out), visibility 0s var(--dur-med);
+}
+.cookie-modal-backdrop.is-open{ opacity:1; visibility:visible; transition-delay:0s; }
+.cookie-modal{
+  position:relative; width:100%; max-width:560px; max-height:88vh; overflow-y:auto;
+  background:var(--ink-900); color:var(--white); border:1px solid rgba(255,255,255,0.12);
+  border-radius:20px; padding:2.25rem; box-shadow:0 30px 80px rgba(0,0,0,0.45);
+  transform:translateY(16px) scale(0.98); transition:transform var(--dur-med) var(--ease-out);
+}
+.cookie-modal-backdrop.is-open .cookie-modal{ transform:translateY(0) scale(1); }
+.cookie-modal-close{
+  position:absolute; top:1.25rem; right:1.25rem; width:36px; height:36px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center; color:var(--white); background:rgba(255,255,255,0.08);
+  transition:background-color var(--dur-fast) var(--ease-out);
+}
+.cookie-modal-close:hover{ background:rgba(255,255,255,0.18); }
+.cookie-modal h3{ font-family:var(--font-display); font-size:1.35rem; padding-right:2.5rem; }
+.cookie-modal-intro{ color:oklch(82% 0.006 255); font-size:0.92rem; margin-top:0.6rem; max-width:52ch; }
+.cookie-cat{ display:flex; align-items:flex-start; justify-content:space-between; gap:1.5rem; padding-block:1.25rem; border-top:1px solid rgba(255,255,255,0.1); }
+.cookie-cat:first-of-type{ margin-top:1.5rem; }
+.cookie-cat-text strong{ font-size:0.98rem; }
+.cookie-cat-text span{ display:block; color:oklch(78% 0.006 255); font-size:0.85rem; margin-top:0.3rem; max-width:40ch; }
+.cookie-locked-badge{
+  font-size:0.78rem; font-weight:700; color:var(--orange-400); background:rgba(242,140,40,0.14);
+  padding:0.3rem 0.7rem; border-radius:var(--r-pill); white-space:nowrap;
+}
+.cookie-modal-actions{ display:flex; flex-wrap:wrap; gap:0.85rem; margin-top:2rem; }
+.cookie-modal-actions .btn{ flex:1 1 auto; }
+
+/* ---- accessible toggle switch ---- */
+.cookie-toggle{ position:relative; display:inline-flex; flex-shrink:0; cursor:pointer; }
+.cookie-toggle input{ position:absolute; inset:0; opacity:0; margin:0; cursor:pointer; }
+.cookie-toggle-track{
+  width:46px; height:27px; border-radius:var(--r-pill); background:rgba(255,255,255,0.16);
+  border:1px solid rgba(255,255,255,0.22); position:relative; transition:background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+}
+.cookie-toggle-thumb{
+  position:absolute; top:2px; left:2px; width:21px; height:21px; border-radius:50%; background:var(--white);
+  transition:transform var(--dur-fast) var(--ease-out);
+}
+.cookie-toggle input:checked + .cookie-toggle-track{ background:var(--orange-500); border-color:var(--orange-500); }
+.cookie-toggle input:checked + .cookie-toggle-track .cookie-toggle-thumb{ transform:translateX(19px); }
+.cookie-toggle input:focus-visible + .cookie-toggle-track{ outline:2.5px solid var(--orange-400); outline-offset:2px; }
+.cookie-toggle input:disabled{ cursor:not-allowed; }
+.cookie-toggle input:disabled + .cookie-toggle-track{ opacity:0.55; cursor:not-allowed; }
+@media (prefers-reduced-motion: reduce){
+  .cookie-banner, .cookie-modal-backdrop, .cookie-modal, .cookie-toggle-track, .cookie-toggle-thumb{ transition:none; }
+}
+
+/* ==========================================================================
    CONTACT
    ========================================================================== */
 .contact-grid{ display:grid; gap:2.5rem; }
@@ -566,7 +650,14 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 .hours-table td:last-child{ text-align:right; font-weight:600; color:var(--ink-900); }
 .hours-table tr:first-child td{ border-top:none; }
 .hours-table tr.today td{ color:var(--orange-600); font-weight:700; }
-.map-frame{ border:0; width:100%; height:280px; border-radius:var(--r-md); filter:grayscale(0.25) contrast(1.05); margin-top:1.5rem; }
+.map-frame{ width:100%; height:280px; border-radius:var(--r-md); margin-top:1.5rem; overflow:hidden; }
+.map-frame iframe{ border:0; width:100%; height:100%; filter:grayscale(0.25) contrast(1.05); }
+.map-placeholder{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem;
+  background:var(--ink-100); border:1px solid var(--ink-100); text-align:center; padding:1.5rem;
+}
+.map-placeholder .icon{ color:var(--orange-500); }
+.map-placeholder p{ color:var(--ink-600); font-size:0.85rem; max-width:32ch; margin:0; }
 
 .form-card{ background:var(--ink-900); color:var(--white); border-radius:var(--r-md); padding:2rem; }
 .field{ margin-bottom:1.25rem; }
@@ -1270,7 +1361,11 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
             </div>
           </div>
         </div>
-        <iframe class="map-frame" src="https://www.google.com/maps?q=Strada+Avram+Iancu+48A+Brasov&output=embed" title="Locația MTM Technobau pe hartă" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="map-frame map-placeholder" id="mapFrame">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#icon-pin"/></svg>
+          <p>Harta Google Maps se încarcă doar cu acordul tău (poate seta cookie-uri).</p>
+          <button class="btn btn-outline btn-sm" id="mapLoadBtn" type="button">Afișează harta</button>
+        </div>
       </div>
 
       <form class="form-card reveal reveal-right" id="contactForm" novalidate>
@@ -1355,6 +1450,74 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
   </div>
 </footer>
 
+<!-- ============ COOKIE CONSENT ============ -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Consimțământ cookie-uri">
+  <div class="cookie-banner-text">
+    <h3>Respectăm confidențialitatea ta</h3>
+    <p>Folosim cookie-uri pentru a îmbunătăți experiența de navigare, pentru analiză și pentru personalizarea conținutului. Poți alege ce tipuri de cookie-uri dorești să accepți.</p>
+  </div>
+  <div class="cookie-banner-actions">
+    <button class="cookie-link-btn" id="cookieCustomize" type="button">Personalizează setările</button>
+    <button class="btn btn-ghost-dark" id="cookieRejectAll" type="button">Refuză</button>
+    <button class="btn btn-primary" id="cookieAcceptAll" type="button">Acceptă toate</button>
+  </div>
+</div>
+
+<div class="cookie-modal-backdrop" id="cookieModalBackdrop">
+  <div class="cookie-modal" role="dialog" aria-modal="true" aria-labelledby="cookieModalTitle">
+    <button class="cookie-modal-close" id="cookieModalClose" type="button" aria-label="Închide"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#icon-close"/></svg></button>
+    <h3 id="cookieModalTitle">Setări cookie-uri</h3>
+    <p class="cookie-modal-intro">Alege ce tipuri de cookie-uri accepți. Poți reveni oricând asupra acestor preferințe.</p>
+
+    <div class="cookie-cat">
+      <div class="cookie-cat-text">
+        <strong>Necesare</strong>
+        <span>Esențiale pentru funcționarea site-ului (navigare, securitate). Nu pot fi dezactivate.</span>
+      </div>
+      <span class="cookie-locked-badge">Activ</span>
+    </div>
+
+    <div class="cookie-cat">
+      <div class="cookie-cat-text">
+        <strong>Analiză</strong>
+        <span>Ne ajută să înțelegem cum este folosit site-ul, ca să-l putem îmbunătăți.</span>
+      </div>
+      <label class="cookie-toggle">
+        <input type="checkbox" id="toggleAnalytics">
+        <span class="cookie-toggle-track"><span class="cookie-toggle-thumb"></span></span>
+      </label>
+    </div>
+
+    <div class="cookie-cat">
+      <div class="cookie-cat-text">
+        <strong>Marketing</strong>
+        <span>Folosite pentru a personaliza reclame relevante pentru tine.</span>
+      </div>
+      <label class="cookie-toggle">
+        <input type="checkbox" id="toggleMarketing">
+        <span class="cookie-toggle-track"><span class="cookie-toggle-thumb"></span></span>
+      </label>
+    </div>
+
+    <div class="cookie-cat">
+      <div class="cookie-cat-text">
+        <strong>Preferințe</strong>
+        <span>Rețin alegerile tale (ex: limbă, regiune) pentru vizitele viitoare.</span>
+      </div>
+      <label class="cookie-toggle">
+        <input type="checkbox" id="togglePreferences">
+        <span class="cookie-toggle-track"><span class="cookie-toggle-thumb"></span></span>
+      </label>
+    </div>
+
+    <div class="cookie-modal-actions">
+      <button class="btn btn-ghost-dark" id="cookieRejectOptional" type="button">Refuză opționalele</button>
+      <button class="btn btn-ghost-dark" id="cookieAcceptAllModal" type="button">Acceptă toate</button>
+      <button class="btn btn-primary" id="cookieSavePrefs" type="button">Salvează preferințele</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ LIGHTBOX ============ -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Vizualizare imagine">
   <button class="lightbox-close" id="lightboxClose" aria-label="Închide"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-close"/></svg></button>
@@ -1383,6 +1546,108 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
   if(fabWhatsapp){
     fabWhatsapp.href = waLinkFor('Bună, aș dori o ofertă pentru un proiect de construcții.');
   }
+
+  /* ---- cookie consent: banner + granular settings modal.
+     Stores the visitor's choice so nothing real needs to be gated today
+     (no analytics/marketing scripts are wired in yet), but the mechanism
+     is ready for whenever those get added. ---- */
+  var COOKIE_KEY = 'mtm-cookie-prefs';
+  var cookieBanner = document.getElementById('cookieBanner');
+  var cookieModalBackdrop = document.getElementById('cookieModalBackdrop');
+  var toggleAnalytics = document.getElementById('toggleAnalytics');
+  var toggleMarketing = document.getElementById('toggleMarketing');
+  var togglePreferences = document.getElementById('togglePreferences');
+  var mapFrame = document.getElementById('mapFrame');
+  var mapLoadBtn = document.getElementById('mapLoadBtn');
+
+  function getSavedPrefs(){
+    try {
+      var raw = localStorage.getItem(COOKIE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function savePrefs(prefs){
+    try { localStorage.setItem(COOKIE_KEY, JSON.stringify(prefs)); } catch(e){}
+  }
+  function showBanner(){ if(cookieBanner) cookieBanner.classList.add('is-visible'); }
+  function hideBanner(){ if(cookieBanner) cookieBanner.classList.remove('is-visible'); }
+
+  /* the Maps embed is the one real thing on this page that can set a
+     cookie (from Google), so it only loads once "marketing" is allowed,
+     either via a full accept or by asking for it directly. */
+  function loadMap(){
+    if(!mapFrame || mapFrame.querySelector('iframe')) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.google.com/maps?q=Strada+Avram+Iancu+48A+Brasov&output=embed';
+    iframe.title = 'Locația MTM Technobau pe hartă';
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    mapFrame.classList.remove('map-placeholder');
+    mapFrame.innerHTML = '';
+    mapFrame.appendChild(iframe);
+  }
+  if(mapLoadBtn) mapLoadBtn.addEventListener('click', function(){
+    var prefs = getSavedPrefs() || { analytics:false, marketing:false, preferences:false };
+    prefs.marketing = true;
+    savePrefs(prefs);
+    loadMap();
+  });
+  var initialPrefs = getSavedPrefs();
+  if(initialPrefs && initialPrefs.marketing) loadMap();
+  function openCookieModal(){
+    var prefs = getSavedPrefs() || { analytics:false, marketing:false, preferences:false };
+    if(toggleAnalytics) toggleAnalytics.checked = !!prefs.analytics;
+    if(toggleMarketing) toggleMarketing.checked = !!prefs.marketing;
+    if(togglePreferences) togglePreferences.checked = !!prefs.preferences;
+    if(cookieModalBackdrop){ cookieModalBackdrop.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+  }
+  function closeCookieModal(){
+    if(cookieModalBackdrop){ cookieModalBackdrop.classList.remove('is-open'); document.body.style.overflow = ''; }
+    if(!getSavedPrefs()) showBanner();
+  }
+
+  if(!getSavedPrefs()){
+    setTimeout(showBanner, 1200);
+  }
+
+  var cookieAcceptAll = document.getElementById('cookieAcceptAll');
+  var cookieRejectAll = document.getElementById('cookieRejectAll');
+  var cookieCustomize = document.getElementById('cookieCustomize');
+  if(cookieAcceptAll) cookieAcceptAll.addEventListener('click', function(){
+    savePrefs({ analytics:true, marketing:true, preferences:true }); hideBanner(); loadMap();
+  });
+  if(cookieRejectAll) cookieRejectAll.addEventListener('click', function(){
+    savePrefs({ analytics:false, marketing:false, preferences:false }); hideBanner();
+  });
+  if(cookieCustomize) cookieCustomize.addEventListener('click', openCookieModal);
+
+  var cookieModalClose = document.getElementById('cookieModalClose');
+  var cookieSavePrefs = document.getElementById('cookieSavePrefs');
+  var cookieAcceptAllModal = document.getElementById('cookieAcceptAllModal');
+  var cookieRejectOptional = document.getElementById('cookieRejectOptional');
+  if(cookieModalClose) cookieModalClose.addEventListener('click', closeCookieModal);
+  if(cookieModalBackdrop) cookieModalBackdrop.addEventListener('click', function(e){
+    if(e.target === cookieModalBackdrop) closeCookieModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && cookieModalBackdrop && cookieModalBackdrop.classList.contains('is-open')) closeCookieModal();
+  });
+  if(cookieSavePrefs) cookieSavePrefs.addEventListener('click', function(){
+    var marketingOn = !!(toggleMarketing && toggleMarketing.checked);
+    savePrefs({
+      analytics: !!(toggleAnalytics && toggleAnalytics.checked),
+      marketing: marketingOn,
+      preferences: !!(togglePreferences && togglePreferences.checked)
+    });
+    closeCookieModal(); hideBanner();
+    if(marketingOn) loadMap();
+  });
+  if(cookieAcceptAllModal) cookieAcceptAllModal.addEventListener('click', function(){
+    savePrefs({ analytics:true, marketing:true, preferences:true }); closeCookieModal(); hideBanner(); loadMap();
+  });
+  if(cookieRejectOptional) cookieRejectOptional.addEventListener('click', function(){
+    savePrefs({ analytics:false, marketing:false, preferences:false }); closeCookieModal(); hideBanner();
+  });
 
   /* ---- scroll progress + nav state ---- */
   var progress = document.getElementById('scrollProgress');
