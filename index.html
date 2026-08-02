@@ -752,7 +752,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 </head>
 <body>
 <script>
-  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && window.matchMedia('(min-width: 768px)').matches) {
     document.documentElement.classList.add('js-reveal');
   }
 </script>
@@ -1531,6 +1531,11 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 (function(){
   "use strict";
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* true only when scroll-driven motion should actually run: not reduced-motion,
+     and not a phone-width viewport. Phones skip the reveal/gallery/proces scroll
+     observers entirely (matches .js-reveal's CSS gate), so there's no per-scroll
+     work happening at all, not just no visible animation. */
+  var desktopMotion = !reduceMotion && window.matchMedia('(min-width: 768px)').matches;
   document.getElementById('year').textContent = new Date().getFullYear();
 
   /* ---- WhatsApp link: phones deep-link straight into the app via wa.me;
@@ -1679,7 +1684,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 
   /* ---- reveal on scroll ---- */
   var revealEls = document.querySelectorAll('.reveal, .why-card');
-  if('IntersectionObserver' in window && !reduceMotion){
+  if('IntersectionObserver' in window && desktopMotion){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if(entry.isIntersecting){
@@ -1696,7 +1701,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
   /* ---- gallery: images appear one by one on scroll down, disappear one by one on scroll up ---- */
   var galleryRevealItems = Array.prototype.slice.call(document.querySelectorAll('.gallery-reveal'));
   galleryRevealItems.forEach(function(el, i){ el.style.transitionDelay = (i * 80) + 'ms'; });
-  if('IntersectionObserver' in window && !reduceMotion){
+  if('IntersectionObserver' in window && desktopMotion){
     var ioGallery = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         entry.target.classList.toggle('is-visible', entry.isIntersecting);
@@ -1726,7 +1731,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
      zone is currently most in view (more forgiving than a single crossing-point). */
   var procesZones = Array.prototype.slice.call(document.querySelectorAll('.proces-zone'));
   var procesItems = Array.prototype.slice.call(document.querySelectorAll('.proces-item'));
-  if(procesZones.length && 'IntersectionObserver' in window){
+  if(procesZones.length && 'IntersectionObserver' in window && desktopMotion){
     var procesRatios = {};
     procesZones.forEach(function(z){ procesRatios[z.getAttribute('data-step')] = 0; });
     var ioProces = new IntersectionObserver(function(entries){
