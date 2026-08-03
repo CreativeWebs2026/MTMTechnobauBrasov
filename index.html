@@ -1368,7 +1368,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
         <div class="field">
           <label for="f-mesaj">Mesaj</label>
           <textarea id="f-mesaj" name="mesaj" placeholder="Spune-ne câteva cuvinte despre proiectul tău" required></textarea>
-          <span class="field-error">Te rugăm descrie pe scurt proiectul.</span>
+          <span class="field-error">Te rugăm descrie proiectul în cel puțin 30 de caractere.</span>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Trimite pe WhatsApp<svg class="icon-sm" viewBox="0 0 32 32"><use href="#icon-whatsapp"/></svg></button>
@@ -1771,7 +1771,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
     nume: function(v){ return v.trim().length >= 2; },
     telefon: function(v){ return /^[0-9+\s().-]{7,}$/.test(v.trim()); },
     serviciu: function(v){ return v.trim().length > 0; },
-    mesaj: function(v){ return v.trim().length >= 5; }
+    mesaj: function(v){ return v.trim().length >= 30; }
   };
   function validateForm(){
     var valid = true;
