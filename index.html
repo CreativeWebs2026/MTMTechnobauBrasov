@@ -638,7 +638,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 /* ==========================================================================
    CONTACT
    ========================================================================== */
-.contact-grid{ display:grid; gap:2.5rem; }
+.contact-grid{ display:grid; gap:2.5rem; align-items:start; }
 .info-card{ background:var(--white); border:1px solid var(--ink-100); border-radius:var(--r-md); padding:1.75rem; }
 .info-row{ display:flex; gap:0.9rem; align-items:flex-start; padding-block:0.85rem; border-top:1px solid var(--ink-100); }
 .info-row:first-child{ border-top:none; padding-top:0; }
@@ -660,6 +660,8 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 .map-placeholder p{ color:var(--ink-600); font-size:0.85rem; max-width:32ch; margin:0; }
 
 .form-card{ background:var(--ink-900); color:var(--white); border-radius:var(--r-md); padding:2rem; }
+.form-actions{ display:flex; flex-wrap:wrap; gap:0.85rem; }
+.form-actions .btn{ flex:1 1 200px; }
 .field{ margin-bottom:1.25rem; }
 .field label{ display:block; font-size:0.88rem; font-weight:600; margin-bottom:0.4rem; color:oklch(85% 0.006 255); }
 .field input, .field textarea, .field select{
@@ -1369,7 +1371,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
       </div>
 
       <form class="form-card reveal reveal-right" id="contactForm" novalidate>
-        <div class="form-success" id="formSuccess"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-check"/></svg>Îți pregătim mesajul. Te trimitem spre WhatsApp.</div>
+        <div class="form-success" id="formSuccess"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-check"/></svg><span id="formSuccessText">Îți pregătim mesajul.</span></div>
         <div class="field">
           <label for="f-nume">Nume</label>
           <input type="text" id="f-nume" name="nume" placeholder="Numele tău" autocomplete="name" required>
@@ -1401,7 +1403,10 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
           <textarea id="f-mesaj" name="mesaj" placeholder="Spune-ne câteva cuvinte despre proiectul tău" required></textarea>
           <span class="field-error">Te rugăm descrie pe scurt proiectul.</span>
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Trimite pe WhatsApp<svg class="icon-sm" viewBox="0 0 32 32"><use href="#icon-whatsapp"/></svg></button>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Trimite pe WhatsApp<svg class="icon-sm" viewBox="0 0 32 32"><use href="#icon-whatsapp"/></svg></button>
+          <button type="button" class="btn btn-ghost-dark" id="emailSubmitBtn">Trimite pe email<svg class="icon-sm" viewBox="0 0 24 24"><use href="#icon-mail"/></svg></button>
+        </div>
       </form>
     </div>
   </div>
@@ -1813,17 +1818,18 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
   var todayRow = document.querySelector('#hoursTable tr[data-day="' + todayIdx + '"]');
   if(todayRow) todayRow.classList.add('today');
 
-  /* ---- contact form: validate, then hand off to WhatsApp with a ready-made message ---- */
+  /* ---- contact form: validate, then hand off to WhatsApp or email with a ready-made message ---- */
   var form = document.getElementById('contactForm');
   var formSuccess = document.getElementById('formSuccess');
+  var formSuccessText = document.getElementById('formSuccessText');
+  var CONTACT_EMAIL = 'mtm.technobau@yahoo.com';
   var validators = {
     nume: function(v){ return v.trim().length >= 2; },
     telefon: function(v){ return /^[0-9+\s().-]{7,}$/.test(v.trim()); },
     serviciu: function(v){ return v.trim().length > 0; },
     mesaj: function(v){ return v.trim().length >= 5; }
   };
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
+  function validateForm(){
     var valid = true;
     Object.keys(validators).forEach(function(name){
       var input = form.elements[name];
@@ -1832,21 +1838,47 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
       field.classList.toggle('has-error', !ok);
       if(!ok) valid = false;
     });
-    if(valid){
-      var nume = form.elements.nume.value.trim();
-      var telefon = form.elements.telefon.value.trim();
-      var serviciu = form.elements.serviciu.value;
-      var mesaj = form.elements.mesaj.value.trim();
-      var text = 'Bună, mă numesc ' + nume + ' (' + telefon + ').\n' +
-        'Sunt interesat/ă de: ' + serviciu + '.\n' +
-        'Detalii: ' + mesaj;
+    return valid;
+  }
+  function readFormValues(){
+    return {
+      nume: form.elements.nume.value.trim(),
+      telefon: form.elements.telefon.value.trim(),
+      serviciu: form.elements.serviciu.value,
+      mesaj: form.elements.mesaj.value.trim()
+    };
+  }
+  function showSuccessAndReset(channelText){
+    if(formSuccessText) formSuccessText.textContent = 'Îți pregătim mesajul. ' + channelText;
+    formSuccess.classList.add('is-visible');
+    formSuccess.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block:'center' });
+    form.reset();
+    form.querySelectorAll('.field').forEach(function(f){ f.classList.remove('has-error'); });
+  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(validateForm()){
+      var v = readFormValues();
+      var text = 'Bună, mă numesc ' + v.nume + ' (' + v.telefon + ').\n' +
+        'Sunt interesat/ă de: ' + v.serviciu + '.\n' +
+        'Detalii: ' + v.mesaj;
       var waLink = waLinkFor(text);
-
-      formSuccess.classList.add('is-visible');
-      formSuccess.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block:'center' });
-      form.reset();
-      form.querySelectorAll('.field').forEach(function(f){ f.classList.remove('has-error'); });
+      showSuccessAndReset('Te trimitem spre WhatsApp.');
       setTimeout(function(){ window.location.href = waLink; }, 400);
+    }
+  });
+  var emailSubmitBtn = document.getElementById('emailSubmitBtn');
+  if(emailSubmitBtn) emailSubmitBtn.addEventListener('click', function(){
+    if(validateForm()){
+      var v = readFormValues();
+      var subject = 'Cerere ofertă: ' + v.serviciu;
+      var body = 'Nume: ' + v.nume + '\n' +
+        'Telefon: ' + v.telefon + '\n' +
+        'Serviciu: ' + v.serviciu + '\n\n' +
+        'Mesaj:\n' + v.mesaj;
+      var mailLink = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      showSuccessAndReset('Îți deschidem aplicația de email.');
+      setTimeout(function(){ window.location.href = mailLink; }, 400);
     }
   });
   Object.keys(validators).forEach(function(name){
