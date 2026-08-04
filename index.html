@@ -111,6 +111,45 @@
 }
 </script>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Ce servicii de construcții oferă MTM Technobau în Brașov?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Construcții rezidențiale, fundații și structuri, beton și lucrări structurale, construcții metalice, infrastructură și drumuri, renovări și finisaje interioare, acoperișuri și exterior, instalații și utilități, și servicii complementare." }
+    },
+    {
+      "@type": "Question",
+      "name": "În ce zonă lucrează MTM Technobau?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Lucrăm în Brașov și în tot județul Brașov." }
+    },
+    {
+      "@type": "Question",
+      "name": "MTM Technobau lucrează cu subcontractori?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nu. Toate lucrările sunt executate cu echipe proprii, de la fundație până la finisaj." }
+    },
+    {
+      "@type": "Question",
+      "name": "Cât durează o lucrare de construcție sau renovare?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Depinde de amploarea proiectului. La prima vizită pe teren stabilim un termen clar, pe care îl comunicăm din prima zi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Cum primesc o ofertă de la MTM Technobau?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Suni la 0747 383 692, scrii pe WhatsApp sau completezi formularul de pe site. Facem o vizită la fața locului și pregătim o ofertă fără costuri ascunse." }
+    },
+    {
+      "@type": "Question",
+      "name": "MTM Technobau are recenzii verificate?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Da, rating 5.0 din 5 stele pe Google, cu 5 recenzii." }
+    }
+  ]
+}
+</script>
+
 <style>
 /* ==========================================================================
    MTM TECHNOBAU tokens
@@ -399,6 +438,23 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
 .svc-list ul{ margin-top:0.75rem; display:grid; gap:0.55rem; }
 .svc-list li{ display:flex; align-items:flex-start; gap:0.55rem; color:var(--ink-600); font-size:0.95rem; }
 .svc-list li .icon-sm{ color:var(--orange-500); margin-top:0.2em; }
+
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+.faq-list{ max-width:760px; margin:0 auto; display:grid; gap:1rem; }
+.faq-item{
+  background:var(--white); border:1px solid var(--ink-100); border-radius:var(--r-md);
+  padding:1.25rem 1.5rem;
+}
+.faq-item summary{
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  cursor:pointer; list-style:none; font-weight:700; font-size:1.05rem; color:var(--ink-900);
+}
+.faq-item summary::-webkit-details-marker{ display:none; }
+.faq-item summary .chev{ transition:transform var(--dur-fast) var(--ease-out); color:var(--orange-600); flex-shrink:0; }
+.faq-item[open] summary .chev{ transform:rotate(180deg); }
+.faq-item p{ margin-top:0.75rem; color:var(--ink-600); line-height:1.6; }
 
 /* ==========================================================================
    PROCES: lista statica normala, fara animatie de scroll. Titlul si toti
@@ -1304,6 +1360,42 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
   </div>
 </section>
 
+<!-- ============ FAQ ============ -->
+<section class="section bg-tint" id="faq">
+  <div class="container">
+    <div class="section-head center reveal">
+      <h2 class="h-section">Întrebări frecvente</h2>
+      <p class="lede">Răspunsuri rapide la ce ne întreabă cel mai des clienții din Brașov.</p>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>Ce servicii de construcții oferă MTM Technobau în Brașov?<svg class="icon-sm chev" viewBox="0 0 24 24"><use href="#icon-chevron-down"/></svg></summary>
+        <p>Construcții rezidențiale, fundații și structuri, beton și lucrări structurale, construcții metalice, infrastructură și drumuri, renovări și finisaje interioare, acoperișuri și exterior, instalații și utilități, și servicii complementare.</p>
+      </details>
+      <details class="faq-item">
+        <summary>În ce zonă lucrează MTM Technobau?<svg class="icon-sm chev" viewBox="0 0 24 24"><use href="#icon-chevron-down"/></svg></summary>
+        <p>Lucrăm în Brașov și în tot județul Brașov.</p>
+      </details>
+      <details class="faq-item">
+        <summary>MTM Technobau lucrează cu subcontractori?<svg class="icon-sm chev" viewBox="0 0 24 24"><use href="#icon-chevron-down"/></svg></summary>
+        <p>Nu. Toate lucrările sunt executate cu echipe proprii, de la fundație până la finisaj.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Cât durează o lucrare de construcție sau renovare?<svg class="icon-sm chev" viewBox="0 0 24 24"><use href="#icon-chevron-down"/></svg></summary>
+        <p>Depinde de amploarea proiectului. La prima vizită pe teren stabilim un termen clar, pe care îl comunicăm din prima zi.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Cum primesc o ofertă de la MTM Technobau?<svg class="icon-sm chev" viewBox="0 0 24 24"><use href="#icon-chevron-down"/></svg></summary>
+        <p>Suni la 0747 383 692, scrii pe WhatsApp sau completezi formularul de pe site. Facem o vizită la fața locului și pregătim o ofertă fără costuri ascunse.</p>
+      </details>
+      <details class="faq-item">
+        <summary>MTM Technobau are recenzii verificate?<svg class="icon-sm chev" viewBox="0 0 24 24"><use href="#icon-chevron-down"/></svg></summary>
+        <p>Da, rating 5.0 din 5 stele pe Google, cu 5 recenzii.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CONTACT ============ -->
 <section class="section bg-tint" id="contact">
   <div class="container">
@@ -1413,6 +1505,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
         <a href="#de-ce-noi">De ce noi</a>
         <a href="#recenzii">Recenzii</a>
         <a href="#galerie">Galerie</a>
+        <a href="#faq">Întrebări frecvente</a>
         <a href="#contact">Contact</a>
       </div>
     </div>
