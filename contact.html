@@ -325,20 +325,20 @@
       </div>
 
       <form class="form-card reveal reveal-right" id="contactForm" novalidate>
-        <div class="form-success" id="formSuccess"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-check"/></svg><span id="formSuccessText">Îți pregătim mesajul.</span></div>
+        <div class="form-success" id="formSuccess" role="status" aria-live="polite"><svg class="icon" viewBox="0 0 24 24"><use href="#icon-check"/></svg><span id="formSuccessText">Îți pregătim mesajul.</span></div>
         <div class="field">
           <label for="f-nume">Nume</label>
-          <input type="text" id="f-nume" name="nume" placeholder="Numele tău" autocomplete="name" required>
-          <span class="field-error">Te rugăm introdu numele tău.</span>
+          <input type="text" id="f-nume" name="nume" placeholder="Numele tău" autocomplete="name" aria-describedby="err-nume" required>
+          <span class="field-error" id="err-nume" role="alert">Te rugăm introdu numele tău.</span>
         </div>
         <div class="field">
           <label for="f-telefon">Telefon</label>
-          <input type="tel" id="f-telefon" name="telefon" placeholder="07xx xxx xxx" autocomplete="tel" required>
-          <span class="field-error">Introdu un număr de telefon valid.</span>
+          <input type="tel" id="f-telefon" name="telefon" placeholder="07xx xxx xxx" autocomplete="tel" aria-describedby="err-telefon" required>
+          <span class="field-error" id="err-telefon" role="alert">Introdu un număr de telefon valid.</span>
         </div>
         <div class="field">
           <label for="f-serviciu">Serviciu</label>
-          <select id="f-serviciu" name="serviciu" required>
+          <select id="f-serviciu" name="serviciu" aria-describedby="err-serviciu" required>
             <option value="" disabled selected>Alege un serviciu</option>
             <option>Construcții rezidențiale</option>
             <option>Fundații &amp; Structuri</option>
@@ -350,12 +350,12 @@
             <option>Instalații &amp; Utilități</option>
             <option>Servicii complementare</option>
           </select>
-          <span class="field-error">Alege serviciul care te interesează.</span>
+          <span class="field-error" id="err-serviciu" role="alert">Alege serviciul care te interesează.</span>
         </div>
         <div class="field">
           <label for="f-mesaj">Mesaj</label>
-          <textarea id="f-mesaj" name="mesaj" placeholder="Spune-ne câteva cuvinte despre proiectul tău" required></textarea>
-          <span class="field-error">Te rugăm descrie proiectul în cel puțin 30 de caractere.</span>
+          <textarea id="f-mesaj" name="mesaj" placeholder="Spune-ne câteva cuvinte despre proiectul tău" aria-describedby="err-mesaj" required></textarea>
+          <span class="field-error" id="err-mesaj" role="alert">Te rugăm descrie proiectul în cel puțin 30 de caractere.</span>
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-primary">Trimite pe WhatsApp<svg class="icon-sm" viewBox="0 0 32 32"><use href="#icon-whatsapp"/></svg></button>

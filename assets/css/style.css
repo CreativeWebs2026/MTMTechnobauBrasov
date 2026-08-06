@@ -584,7 +584,7 @@ h2.h-section{ font-size:clamp(1.9rem, 3.6vw, 2.75rem); margin-top:0.5rem; }
   padding:0.8rem 1rem; color:var(--white); transition:border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
 }
 .field input::placeholder, .field textarea::placeholder{ color:oklch(60% 0.006 65); }
-.field input:focus, .field textarea:focus, .field select:focus{ border-color:var(--orange-500); background:rgba(255,255,255,0.09); outline:none; }
+.field input:focus, .field textarea:focus, .field select:focus{ border-color:var(--orange-500); background:rgba(255,255,255,0.09); outline:2px solid var(--orange-400); outline-offset:2px; }
 .field textarea{ min-height:110px; resize:vertical; }
 .field select{
   appearance:none; cursor:pointer;

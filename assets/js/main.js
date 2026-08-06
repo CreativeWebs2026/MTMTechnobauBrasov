@@ -69,16 +69,23 @@
   });
   var initialPrefs = getSavedPrefs();
   if(initialPrefs && initialPrefs.marketing) loadMap();
+  var cookieModalTrigger = null;
   function openCookieModal(){
     var prefs = getSavedPrefs() || { analytics:false, marketing:false, preferences:false };
     if(toggleAnalytics) toggleAnalytics.checked = !!prefs.analytics;
     if(toggleMarketing) toggleMarketing.checked = !!prefs.marketing;
     if(togglePreferences) togglePreferences.checked = !!prefs.preferences;
-    if(cookieModalBackdrop){ cookieModalBackdrop.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+    cookieModalTrigger = document.activeElement;
+    if(cookieModalBackdrop){
+      cookieModalBackdrop.classList.add('is-open'); document.body.style.overflow = 'hidden';
+      var closeBtn = document.getElementById('cookieModalClose');
+      if(closeBtn) closeBtn.focus();
+    }
   }
   function closeCookieModal(){
     if(cookieModalBackdrop){ cookieModalBackdrop.classList.remove('is-open'); document.body.style.overflow = ''; }
     if(!getSavedPrefs()) showBanner();
+    if(cookieModalTrigger && typeof cookieModalTrigger.focus === 'function') cookieModalTrigger.focus();
   }
 
   if(!getSavedPrefs()){
@@ -208,7 +215,9 @@
   var lightboxImg = document.getElementById('lightboxImg');
   var lightboxCap = document.getElementById('lightboxCap');
   var lbIndex = 0;
+  var lightboxTrigger = null;
   function openLightbox(i){
+    if(!lightbox.classList.contains('is-open')) lightboxTrigger = document.activeElement;
     lbIndex = i;
     var item = galleryItems[i];
     var img = item.querySelector('img');
@@ -216,9 +225,12 @@
     lightboxCap.textContent = item.getAttribute('data-caption') || '';
     lightbox.classList.add('is-open');
     document.body.style.overflow = 'hidden';
+    var closeBtn = document.getElementById('lightboxClose');
+    if(closeBtn) closeBtn.focus();
   }
   function closeLightbox(){
     lightbox.classList.remove('is-open'); document.body.style.overflow = '';
+    if(lightboxTrigger && typeof lightboxTrigger.focus === 'function') lightboxTrigger.focus();
   }
   function stepLightbox(dir){ openLightbox((lbIndex + dir + galleryItems.length) % galleryItems.length); }
   galleryItems.forEach(function(item, i){ item.addEventListener('click', function(){ openLightbox(i); }); });
@@ -256,6 +268,7 @@
       var field = input.closest('.field');
       var ok = validators[name](input.value);
       field.classList.toggle('has-error', !ok);
+      input.setAttribute('aria-invalid', ok ? 'false' : 'true');
       if(!ok) valid = false;
     });
     return valid;
@@ -303,7 +316,7 @@
   });
   Object.keys(validators).forEach(function(name){
     var el = form.elements[name];
-    el.addEventListener('input', function(){ this.closest('.field').classList.remove('has-error'); });
-    el.addEventListener('change', function(){ this.closest('.field').classList.remove('has-error'); });
+    el.addEventListener('input', function(){ this.closest('.field').classList.remove('has-error'); this.setAttribute('aria-invalid', 'false'); });
+    el.addEventListener('change', function(){ this.closest('.field').classList.remove('has-error'); this.setAttribute('aria-invalid', 'false'); });
   });
 })();
