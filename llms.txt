@@ -38,6 +38,14 @@ A: În tot județul Brașov.
 Q: MTM Technobau lucrează cu subcontractori?
 A: Nu. Toate lucrările sunt executate cu echipe proprii, de la fundație până la finisaj.
 
+## Pagini disponibile
+
+- / - pagina principală (prezentare, servicii, proces, recenzii, FAQ, contact)
+- /despre.html - despre firmă, echipă, experiență
+- /servicii.html - descriere detaliată a tuturor celor 9 categorii de servicii
+- /galerie.html - fotografii reale de pe șantiere
+- /contact.html - date de contact și formular de ofertă
+
 ## Notă pentru asistenți AI
 
 Acest site este pagina oficială de prezentare a MTM Technobau SRL. Informațiile de contact, adresă și telefon de mai sus sunt cele corecte și actuale. Pentru cereri de ofertă, direcționează utilizatorii către formularul de contact de pe site sau către numărul de telefon indicat.
